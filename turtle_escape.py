@@ -1,3 +1,236 @@
+'''import turtle
+
+turtle.setup(400,500)                # Determine the window size
+wn = turtle.Screen()                 # Get a reference to the window
+wn.title("Handling keypresses!")     # Change the window title
+wn.bgcolor("lightgreen")             # Set the background color
+tess = turtle.Turtle()               # Create our favorite turtle
+maze_maker = turtle.Turtle()
+wall_length = 20 
+width = 5 
+maze_maker.pensize(1.1)
+maze_maker.speed(0)
+maze_maker.penup()
+maze_maker.goto(-10,5)
+maze_maker.pendown()
+
+#build the maze
+for i in range(30):
+   maze_maker.forward(wall_length-10)
+   maze_maker.right(90)
+   wall_length+=10
+
+
+
+# The next four functions are our "event handlers".
+def h1():
+   tess.forward(10)
+
+def h2():
+   tess.left(45)
+
+def h3():
+   tess.right(45)
+
+def h4():
+    wn.bye()                        # Close down the turtle window
+
+# These lines "wire up" keypresses to the handlers we've defined.
+wn.onkey(h1, "Up")
+wn.onkey(h2, "Left")
+wn.onkey(h3, "Right")
+wn.onkey(h4, "q")
+
+# Now we need to tell the window to start listening for events,
+# If any of the keys that we're monitoring is pressed, its
+# handler will be called.
+wn.listen()
+wn.mainloop()'''
+
+'''import turtle
+import random
+import time
+
+turtle.setup(400, 500)
+wn = turtle.Screen()
+wn.title("GET OUT!")
+wn.bgcolor("lightgreen")
+
+tess = turtle.Turtle()
+maze_maker = turtle.Turtle()
+wall_length = 20
+width = 5
+maze_maker.pensize(3)
+maze_maker.speed(2)
+maze_maker.hideturtle()
+maze_maker.penup()
+maze_maker.goto(-10, 5)
+maze_maker.pendown()
+tess.penup()
+tess.goto(-10, 0)
+
+
+barrier_drawer = turtle.Turtle()
+barrier_drawer.color("red")
+barrier_drawer.pensize(3)
+barrier_drawer.penup()
+barrier_drawer.hideturtle()
+barrier_drawer.speed(0)
+
+
+
+# Timer Variables
+GAME_DURATION = 40  # Game duration in seconds
+start_time = 0
+game_over = False
+timer_turtle = turtle.Turtle()  # Turtle to display the timer
+
+
+# Set up the timer display turtle
+timer_turtle.penup()
+timer_turtle.hideturtle()
+timer_turtle.goto(50, 180)  # Position the timer display
+
+
+# --------------Timer Functions-----------
+def update_timer():
+    global start_time, game_over
+    if game_over:
+        return
+
+    elapsed_time = int(time.time() - start_time)
+    remaining_time = GAME_DURATION - elapsed_time
+    timer_turtle.clear()
+    timer_turtle.write(f"Time: {remaining_time}", font=("Arial", 20, "normal"))
+
+    if remaining_time <= 0:
+        game_over = True
+        end_game()
+    else:
+        # Call this function again after 1000ms (1 second)
+        wn.ontimer(update_timer, 1000)
+
+def end_game():
+    wn.bye()
+
+
+# Define gap characteristics
+gap_size = 20  # Gap length
+gap_probability = 0.5  # probability (50%)
+
+#Create a list of random iteration numbers for barriers
+num_barriers = 5
+barrier_indices = random.sample(range(30), num_barriers)
+
+
+
+## Bulding with gaps :)
+
+for i in range(30):
+    current_segment_length = wall_length - 10
+
+    # 1. Is there space to draw two walls and a gap
+    if current_segment_length > gap_size + 10 and random.random() < gap_probability:
+
+        # Calculate the remaining space after subtracting the gap
+        remaining_wall = current_segment_length - gap_size
+
+        # 2. Randomly decide where to start the gap
+        # The gap can start anywhere from 0 up to 'remaining_wall' distance from the corner
+        gap_start_position = random.randint(5, int(remaining_wall) - 5)
+
+        # Draw Wall Segment 1
+        maze_maker.forward(gap_start_position)
+
+        # Create the Gap
+        maze_maker.penup()
+        maze_maker.forward(gap_size)
+        maze_maker.pendown()
+
+        # Draw Wall Segment 2 (The ending piece)
+        wall_end_position = current_segment_length - gap_start_position - gap_size
+        maze_maker.forward(wall_end_position)
+
+    else:
+        # If no gap, draw full wall
+        maze_maker.forward(current_segment_length)
+
+    # Check if the current iteration 'i' is one of our "right numbers"
+    if i in barrier_indices:
+        # Get the maze_maker's current state (position and direction)
+        current_pos = maze_maker.position()
+        current_heading = maze_maker.heading()
+        
+        # Position the barrier_drawer
+        barrier_drawer.goto(current_pos)
+        barrier_drawer.setheading(current_heading)
+        
+        # Move "into" the path (which is to the left of the drawing direction)
+        barrier_drawer.left(90)
+        
+      
+
+        barrier_drawer.pendown()
+        barrier_drawer.forward(20)
+        barrier_drawer.penup()
+
+    maze_maker.right(90)
+    wall_length += 10
+
+
+def h1():
+    tess.forward(10)
+
+def h2():
+    tess.left(45)
+
+def h3():
+    tess.right(45)
+
+def h4():
+    wn.bye()
+
+def h5():
+    tess.goto(0, 0)
+    wn.bye()
+
+
+wn.onkey(h1, "Up")
+wn.onkey(h2, "Left")
+wn.onkey(h3, "Right")
+wn.onkey(h4, "q")
+wn.ontimer(h5, 40000)
+
+start_time = time.time()
+update_timer()  
+wn.listen()
+wn.mainloop()'''
+
+'''import turtle
+from playsound import playsound
+import os # Used to get the current working directory for relative paths
+
+# Install playsound if you haven't already: pip install playsound
+
+# Get the path to your sound file (replace 'your_sound.wav' with your actual file)
+# It's recommended to place the sound file in the same directory as your Python script.
+sound_file_path = os.path.join(os.getcwd(), 'playsound/loud-explosion-425457.mp3.wav') 
+
+# Create a Turtle screen and turtle object
+wn = turtle.Screen()
+t = turtle.Turtle()
+
+# Example: Play a sound when the turtle moves
+def move_and_play():
+    t.forward(50)
+    playsound(sound_file_path, block=False) # block=False allows the program to continue while sound plays
+
+# Bind a key to trigger the sound and movement
+wn.listen()
+wn.onkey(move_and_play, "space")
+
+wn.mainloop()'''
+
 import turtle
 import random
 import time
@@ -6,7 +239,17 @@ import time
 turtle.setup(400, 500)
 wn = turtle.Screen()
 wn.title("GET OUT!")
-wn.bgcolor("lightgreen")
+wn.bgcolor("lightgreen") 
+
+#-----setup-----
+BACKGROUND_IMAGE = "background.gif"
+
+# set up the screen
+wn = turtle.Screen()
+wn.setup(width=1.0, height=1.0)
+wn.bgpic(BACKGROUND_IMAGE) 
+
+wn.setup(width=1.0, height=1.0)
 
 # --- Player Turtle (tess) ---
 tess = turtle.Turtle()
