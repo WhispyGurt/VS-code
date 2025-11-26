@@ -10,7 +10,8 @@ wn = turtle.Screen()
 wn.title("Snek")
 wn.bgcolor("lightgreen")
 fruit=turtle.Turtle()
-
+move_distance = 5
+move_delay = 50 
 
 #Score
 score = 0
@@ -114,8 +115,9 @@ def h4():
     wn.bye()
 
 
-for _ in range(100):
-    snek.forward(1)
+def move_forward():
+    snek.forward(MOVE_DISTANCE)
+    wn.ontimer(move_forward, MOVE_DELAY)
 
 
 
@@ -133,6 +135,7 @@ wn.onkey(h4, "q")
 
 
 # --- Start Game ---
+move_forward()  # Start moving!
 wn.listen()
 wn.mainloop()
 
